@@ -2,6 +2,7 @@ package org.dcm4chee.conf.cdi.dynamicdecorators;
 
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.service.DicomServiceException;
+import org.dcm4chee.archive.compress.impl.StoreServiceCompressDecorator;
 import org.dcm4chee.archive.conf.StoreAction;
 import org.dcm4chee.archive.entity.Patient;
 import org.dcm4chee.archive.entity.Series;
@@ -19,12 +20,16 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * We have to be careful with scopes here. Currently the assumption is that all services/dynadecorator beans are @ApplicationScoped
@@ -35,10 +40,10 @@ public abstract class StoreServiceDynamicDecoratingDecorator implements StoreSer
     @Inject
     @Delegate
     StoreService delegate;
-
+    
     @Inject
-    @DynamicDecorator
-    Instance<DelegatingStoreService> dynamicStoreDecorators;
+    @ConfiguredDynamicDecorators
+    Collection<DelegatingStoreService> dynamicStoreDecorators;
 
     public StoreService wrapWithDynamicDecorators(StoreService delegate) {
 
@@ -48,12 +53,13 @@ public abstract class StoreServiceDynamicDecoratingDecorator implements StoreSer
         // TODO: cache theService per service type - it is ApplicationScoped
 
         StoreService theService = delegate;
-        for (DelegatingStoreService dynamicStoreDecorator : dynamicStoreDecorators) {
-            dynamicStoreDecorator.setDelegate(theService);
-            theService = dynamicStoreDecorator;
+        for (DelegatingStoreService dynamicDecorator : dynamicStoreDecorators) {
+            dynamicDecorator.setDelegate(theService);
+            theService = dynamicDecorator;
         }
 
         return theService;
+
 
     }
 
