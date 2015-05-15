@@ -1,68 +1,34 @@
 package org.dcm4chee.conf.cdi.dynamicdecorators;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+
+import javax.decorator.Decorator;
+import javax.decorator.Delegate;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.net.service.DicomServiceException;
-import org.dcm4chee.archive.compress.impl.StoreServiceCompressDecorator;
 import org.dcm4chee.archive.conf.StoreAction;
 import org.dcm4chee.archive.entity.Patient;
 import org.dcm4chee.archive.entity.Series;
 import org.dcm4chee.archive.entity.Study;
-import org.dcm4chee.archive.store.DelegatingStoreService;
 import org.dcm4chee.archive.store.StoreContext;
 import org.dcm4chee.archive.store.StoreService;
 import org.dcm4chee.archive.store.StoreSession;
-
-import javax.decorator.Decorator;
-import javax.decorator.Delegate;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
-import javax.persistence.EntityManager;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * We have to be careful with scopes here. Currently the assumption is that all services/dynadecorator beans are @ApplicationScoped
  */
 @Decorator
-public abstract class StoreServiceDynamicDecoratingDecorator implements StoreService {
+public abstract class StoreServiceDynamicDecoratingDecorator extends DynamicDecoratorDecorator<StoreService> implements StoreService {
 
     @Inject
     @Delegate
     StoreService delegate;
     
-    @Inject
-    @ConfiguredDynamicDecorators
-    Collection<DelegatingStoreService> dynamicStoreDecorators;
-
-    public StoreService wrapWithDynamicDecorators(StoreService delegate) {
-
-        // Wrap delegate in enabled decorators
-        // TODO: lookup if a deco is enabled in the config
-        // TODO: allow to specify order in the config
-        // TODO: cache theService per service type - it is ApplicationScoped
-
-        StoreService theService = delegate;
-        for (DelegatingStoreService dynamicDecorator : dynamicStoreDecorators) {
-            dynamicDecorator.setDelegate(theService);
-            theService = dynamicDecorator;
-        }
-
-        return theService;
-
-
-    }
-
     public StoreSession createStoreSession(StoreService storeService) throws DicomServiceException {
         return wrapWithDynamicDecorators(delegate).createStoreSession(storeService);
     }

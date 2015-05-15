@@ -11,6 +11,4 @@ import java.lang.annotation.RetentionPolicy;
 public @interface DynamicDecorator {
 	@Nonbinding
 	double priority() default 1.0;
-//	@Nonbinding
-//	boolean enabled() default true;
 }
