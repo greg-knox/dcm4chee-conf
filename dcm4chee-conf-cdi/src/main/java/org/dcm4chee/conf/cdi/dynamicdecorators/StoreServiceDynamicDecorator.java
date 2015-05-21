@@ -23,7 +23,7 @@ import org.dcm4chee.archive.store.StoreSession;
  * We have to be careful with scopes here. Currently the assumption is that all services/dynadecorator beans are @ApplicationScoped
  */
 @Decorator
-public abstract class StoreServiceDynamicDecoratingDecorator extends DynamicDecoratorDecorator<StoreService> implements StoreService {
+public abstract class StoreServiceDynamicDecorator extends DynamicDecoratorWrapper<StoreService> implements StoreService {
 
     @Inject
     @Delegate
@@ -145,15 +145,8 @@ public abstract class StoreServiceDynamicDecoratingDecorator extends DynamicDeco
         wrapWithDynamicDecorators(delegate).fireStoreEvent(context);
     }
 
-    public int[] getStoreFilters() {
-        return wrapWithDynamicDecorators(delegate).getStoreFilters();
-    }
-
     public void storeMetaData(StoreContext context) throws DicomServiceException {
         wrapWithDynamicDecorators(delegate).storeMetaData(context);
     }
-
-
-
 
 }

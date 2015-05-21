@@ -8,26 +8,21 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DynamicDecoratorDecorator<T> {
+public class DynamicDecoratorWrapper<T> {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicDecoratorDecorator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DynamicDecoratorWrapper.class);
 
 	 @Inject
 	 @ConfiguredDynamicDecorators
 	 Instance<Collection<DelegatingServiceImpl<T>>> dynamicDecorators;
 	
     public final T wrapWithDynamicDecorators(T delegate) {
-        // Wrap delegate in enabled decorators
-        // TODO: lookup if a deco is enabled in the config
-        // TODO: allow to specify order in the config
-        // TODO: cache theService per service type - it is ApplicationScoped
-
     	DelegatingServiceImpl<T> theService = new DelegatingServiceImpl<T>();
     	theService.setOrig(delegate);
 
     	for (Collection<DelegatingServiceImpl<T>> collectionDynamicDecoratorsForType : dynamicDecorators) {
 	        for (DelegatingServiceImpl<T> dynamicDecorator : collectionDynamicDecoratorsForType) {
-	            LOG.info("Iterating over {}", dynamicDecorator.getClass());
+	            LOG.trace("Iterating over {}", dynamicDecorator.getClass());
 	        	dynamicDecorator.setDelegate(theService);
 	            dynamicDecorator.setOrig(dynamicDecorator.getTypeObject());
 	            theService = dynamicDecorator;

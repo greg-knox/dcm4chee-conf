@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-
 @DelegatingService
 public class DelegatingStoreService extends DelegatingServiceImpl<StoreService> implements StoreService {
 
@@ -136,10 +135,6 @@ public class DelegatingStoreService extends DelegatingServiceImpl<StoreService> 
 
     public void fireStoreEvent(StoreContext context) {
         getNextDecorator().fireStoreEvent(context);
-    }
-
-    public int[] getStoreFilters() {
-        return getNextDecorator().getStoreFilters();
     }
 
     public void storeMetaData(StoreContext context) throws DicomServiceException {
