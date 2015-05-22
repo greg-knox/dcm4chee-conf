@@ -1,4 +1,4 @@
-package org.dcm4chee.conf.cdi.dynamicdecorators;
+package org.dcm4chee.conf.decorators.impl;
 
 /* * 
  * 1) getTypeObject() method works because the DelegatingXXService classes we have all extend this class with an explicit type T

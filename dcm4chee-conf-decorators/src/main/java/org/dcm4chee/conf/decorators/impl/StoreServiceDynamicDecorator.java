@@ -1,4 +1,4 @@
-package org.dcm4chee.conf.cdi.dynamicdecorators;
+package org.dcm4chee.conf.decorators.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +18,7 @@ import org.dcm4chee.archive.entity.Study;
 import org.dcm4chee.archive.store.StoreContext;
 import org.dcm4chee.archive.store.StoreService;
 import org.dcm4chee.archive.store.StoreSession;
+import org.dcm4chee.conf.decorators.DynamicDecoratorWrapper;
 
 /**
  * We have to be careful with scopes here. Currently the assumption is that all services/dynadecorator beans are @ApplicationScoped

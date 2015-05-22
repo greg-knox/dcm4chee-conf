@@ -1,4 +1,4 @@
-package org.dcm4chee.conf.cdi.dynamicdecorators;
+package org.dcm4chee.conf.decorators.producers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.enterprise.inject.Produces;
 
 import org.dcm4che3.conf.core.api.ConfigurationException;
 import org.dcm4che3.conf.core.storage.SingleJsonFileConfigurationStorage;
+import org.dcm4chee.conf.decorators.ConfiguredDynamicDecorators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class DynamicDecoratorConfigurationProducer {
 	}
 	
 	private String getPath() {
-		return System.getProperty("org.dcm4che.conf.dynamic.decorator.config", "../standalone/configuration/dynamic-decorators.json");
+		return System.getProperty("org.dcm4che.conf.dynamic.decorator.config", "../standalone/configuration/dcm4chee-arc/dynamic-decorators.json");
 	}
 	
 	private double getPriority(Map<String, Object> map) {

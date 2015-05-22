@@ -1,11 +1,9 @@
-package org.dcm4chee.conf.cdi.dynamicdecorators;
+package org.dcm4chee.conf.decorators.producers;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,18 +11,19 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import org.dcm4che3.conf.core.api.ConfigurationException;
-import org.dcm4che3.conf.core.storage.SingleJsonFileConfigurationStorage;
 import org.dcm4che3.net.Device;
 import org.dcm4chee.archive.conf.ArchiveDeviceExtension;
 import org.dcm4chee.archive.query.QueryService;
 import org.dcm4chee.archive.store.StoreService;
+import org.dcm4chee.conf.decorators.ConfiguredDynamicDecorators;
+import org.dcm4chee.conf.decorators.DynamicDecorator;
+import org.dcm4chee.conf.decorators.impl.DelegatingServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
-public class ConfiguredDynamicDecoratorProducer {
-	private static final Logger LOG = LoggerFactory.getLogger(ConfiguredDynamicDecoratorProducer.class);
+public class DynamicDecoratorProducer {
+	private static final Logger LOG = LoggerFactory.getLogger(DynamicDecoratorProducer.class);
 	
 	@Inject
 	Device device;

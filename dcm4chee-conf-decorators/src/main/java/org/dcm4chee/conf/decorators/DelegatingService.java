@@ -1,4 +1,4 @@
-package org.dcm4chee.conf.cdi.dynamicdecorators;
+package org.dcm4chee.conf.decorators;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
